@@ -102,3 +102,21 @@ Add to /admin:
 - **Category management:** toggle which category tabs are visible
 - **Today's questions by category:** filter by tag
 - **Chat log viewer:** read conversation transcripts (moderation)
+
+## FUTURE VISION (logged 2026-04-11, not for Phase 2 build)
+
+### Mood-Adaptive Que
+- Tag question emotional weight: heavy / light / funny / urgent
+- Que's post-response tone adapts to match
+- Infer blunt-vs-gentle preference from which persona user clicks (no asking)
+- Grandparent clicks → serve more direct follow-ups
+- Child clicks → lighter, more playful
+- rapport_score feeds mood weighting over time
+
+### Persona-as-a-Service (hotdeck.com/[persona])
+- Each subdirectory = a knowledge-base persona built from public record
+- Examples: /joe (Rogan-style reasoning), /maya (Angelou wisdom), /mark (Marcus Aurelius stoic)
+- Legal frame: "in the style of" + documented positions only, never impersonation
+- If asked "are you X?" → Que deflects: "I'm just Joe. Make of that what you will."
+- QOD = the daily game. /persona = the rabbit hole product
+- Long-term: hotdeck.com as a persona platform, QOD as the entry drug
