@@ -16,6 +16,8 @@ interface PersonaCardProps {
   shortResponse: string
   questionId: string
   animate?: boolean
+  onGoDeeper?: () => void
+  onDeepDiveLoaded?: () => void
 }
 
 export default function PersonaCard({
@@ -23,6 +25,8 @@ export default function PersonaCard({
   shortResponse,
   questionId,
   animate = false,
+  onGoDeeper,
+  onDeepDiveLoaded,
 }: PersonaCardProps) {
   const [expanded, setExpanded] = useState(false)
   const [deepResponse, setDeepResponse] = useState<string | null>(null)
@@ -38,10 +42,12 @@ export default function PersonaCard({
     }
     setExpanded(true)
     setLoading(true)
+    onGoDeeper?.()
     try {
       const res = await fetch(`/api/questions/${questionId}/deep-dive/${persona}`)
       const data = await res.json()
       setDeepResponse(data.deep_response)
+      onDeepDiveLoaded?.()
     } catch {
       setDeepResponse('Something went wrong loading the deep dive.')
     } finally {

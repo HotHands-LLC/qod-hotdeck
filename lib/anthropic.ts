@@ -6,6 +6,18 @@ export const anthropic = new Anthropic({
 
 export type Persona = 'grandparent' | 'friend' | 'child'
 
+export const VALID_TAGS = [
+  'funny',
+  'spiritual',
+  'thought-provoking',
+  'uncomfortable',
+  'cultural',
+  'personal',
+  'philosophical',
+  'practical',
+] as const
+export type QuestionTag = (typeof VALID_TAGS)[number]
+
 const PERSONA_CONFIGS = {
   grandparent: {
     model: 'claude-opus-4-6',
@@ -44,6 +56,48 @@ export async function getPersonaDeepResponse(persona: Persona, question: string)
     max_tokens: 1200,
     system: config.deepSystemPrompt,
     messages: [{ role: 'user', content: question }],
+  })
+  const content = message.content[0]
+  if (content.type !== 'text') throw new Error('Unexpected response type')
+  return content.text
+}
+
+// Fast Haiku tagging call — fire-and-forget style
+export async function tagQuestion(question: string): Promise<QuestionTag[]> {
+  try {
+    const message = await anthropic.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 80,
+      system: `You are a question tagger. Given this question, assign up to 3 tags from this list ONLY: funny, spiritual, thought-provoking, uncomfortable, cultural, personal, philosophical, practical\n\nRespond with ONLY a JSON array, e.g.: ["tag1", "tag2"]`,
+      messages: [{ role: 'user', content: question }],
+    })
+    const content = message.content[0]
+    if (content.type !== 'text') return []
+    const raw = content.text.trim()
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((t): t is QuestionTag => (VALID_TAGS as readonly string[]).includes(t))
+  } catch {
+    return []
+  }
+}
+
+// Ongoing chat with a chosen persona
+export async function getChatResponse(
+  persona: Persona,
+  originalQuestion: string,
+  messages: Array<{ role: 'user' | 'assistant'; content: string }>
+): Promise<string> {
+  const config = PERSONA_CONFIGS[persona]
+  const systemPrompt =
+    config.deepSystemPrompt +
+    `\n\nThe original question was: "${originalQuestion}". The user is continuing the conversation with you. Stay fully in character. Keep responses conversational and focused — 2-4 paragraphs max.`
+
+  const message = await anthropic.messages.create({
+    model: config.model,
+    max_tokens: 600,
+    system: systemPrompt,
+    messages,
   })
   const content = message.content[0]
   if (content.type !== 'text') throw new Error('Unexpected response type')

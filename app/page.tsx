@@ -1,5 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import QuestionForm from '@/components/QuestionForm'
+import CategoryBrowser from '@/components/CategoryBrowser'
 import Link from 'next/link'
 
 async function getYesterdaysWinner() {
@@ -27,14 +28,17 @@ export default async function Home() {
   const winner = await getYesterdaysWinner()
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16">
+    <main className="min-h-screen flex flex-col items-center px-4 py-16">
       {/* Wordmark */}
-      <div className="mb-12 text-center">
-        <p className="text-[#2a2826] text-xs uppercase tracking-[0.3em]">Question of the Day</p>
+      <div className="mb-12 text-center mt-8">
+        <p className="text-[#2a2826] text-xs uppercase tracking-[0.3em]">Ask Que</p>
       </div>
 
       {/* The question input */}
       <QuestionForm />
+
+      {/* Category browser — client component, self-hides if no questions today */}
+      <CategoryBrowser />
 
       {/* Yesterday's winner */}
       {winner && (

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
-import { getPersonaShortResponse, Persona } from '@/lib/anthropic'
+import { getPersonaShortResponse, tagQuestion, Persona } from '@/lib/anthropic'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { question, email } = body as { question: string; email?: string }
+    const { question, email, nickname } = body as { question: string; email?: string; nickname?: string }
 
     if (!question || question.trim().length === 0) {
       return NextResponse.json({ error: 'Question is required' }, { status: 400 })
@@ -55,7 +55,12 @@ export async function POST(request: NextRequest) {
     // Insert question
     const { data: qData, error: qErr } = await supabaseAdmin
       .from('qod_questions')
-      .insert({ question: question.trim(), user_email: email || null, user_ip: userIp })
+      .insert({
+        question: question.trim(),
+        user_email: email || null,
+        user_ip: userIp,
+        nickname: nickname || null,
+      })
       .select()
       .single()
 
@@ -84,6 +89,21 @@ export async function POST(request: NextRequest) {
     if (rErr) {
       console.error('Response insert error:', rErr)
     }
+
+    // Fire async Haiku tagging — don't await, don't block the response
+    void (async () => {
+      try {
+        const tags = await tagQuestion(question.trim())
+        if (tags.length > 0) {
+          await supabaseAdmin
+            .from('qod_questions')
+            .update({ tags })
+            .eq('id', qData.id)
+        }
+      } catch (err) {
+        console.error('Tagging error:', err)
+      }
+    })()
 
     return NextResponse.json({
       question_id: qData.id,
