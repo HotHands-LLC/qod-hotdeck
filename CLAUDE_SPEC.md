@@ -1,3 +1,5 @@
+# SECURITY NOTE (2026-08-08): All credentials are now `<set in env>` placeholders in this public spec. Do NOT commit actual keys.
+
 # QOD.hotdeck.com — Build Spec for Claude Code
 
 ## What You're Building
@@ -174,7 +176,7 @@ All saves update `qod_settings` table immediately. No deploy needed.
 **Key is served via local proxy OR direct server-side.** Use server-side API routes (never expose key to browser).
 
 ```
-ANTHROPIC_API_KEY=ANTHROPIC_API_KEY_REDACTED
+ANTHROPIC_API_KEY=<set in env>
 ```
 
 ### System prompts per persona:
@@ -202,8 +204,8 @@ Deep dive versions: same persona, extend with "Now go deeper. Share personal sto
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://prtqzvcvcdppnuuzfrmh.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBydHF6dmN2Y2RwcG51dXpmcm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwODU4MzUsImV4cCI6MjA4NzY2MTgzNX0.k5SiZq0gUehcOAAHxbnP35zo6X5BHDza7hPmeOLsb1o
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBydHF6dmN2Y2RwcG51dXpmcm1oIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjA4NTgzNSwiZXhwIjoyMDg3NjYxODM1fQ.afB9Vt6R10aOrdayyJtYE6MKvuSAshNxpz6Wayjw7G4
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<set in env>
+SUPABASE_SERVICE_ROLE_KEY=<set in env>
 ```
 
 ---
@@ -226,10 +228,10 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://prtqzvcvcdppnuuzfrmh.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBydHF6dmN2Y2RwcG51dXpmcm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwODU4MzUsImV4cCI6MjA4NzY2MTgzNX0.k5SiZq0gUehcOAAHxbnP35zo6X5BHDza7hPmeOLsb1o
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBydHF6dmN2Y2RwcG51dXpmcm1oIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjA4NTgzNSwiZXhwIjoyMDg3NjYxODM1fQ.afB9Vt6R10aOrdayyJtYE6MKvuSAshNxpz6Wayjw7G4
-ANTHROPIC_API_KEY=ANTHROPIC_API_KEY_REDACTED
-ADMIN_PASSWORD=BoClaw2026Admin
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<set in env>
+SUPABASE_SERVICE_ROLE_KEY=<set in env>
+ANTHROPIC_API_KEY=<set in env>
+ADMIN_PASSWORD=<set in env>
 ```
 
 ---
